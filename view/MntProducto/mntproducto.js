@@ -1,7 +1,9 @@
 let data; 
 
 function init(){
-
+    $("#producto_form").on("submit", function(e){
+        guardaryeditar(e);
+    })
 }
 
 $(document).ready(function(){
@@ -29,7 +31,7 @@ $(document).ready(function(){
         "bDestroy": true,
         "responsive": true,
         "bInfo": true,
-        "iDisplayLength": 2,
+        "iDisplayLength": 10,
         "order": [[0, "asc"]],
         "language": {
             "sProcessing":      "Procesando...",
@@ -56,6 +58,66 @@ $(document).ready(function(){
             }
         }
     }).DataTable();
+});
+
+function guardaryeditar(e){
+    e.preventDefault();
+    let formData = new FormData($("#producto_form")[0]);
+
+    $.ajax({
+        url: "../../controller/producto.php?op=guardaryeditar",
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(datos){
+            $('#producto_form')[0].reset();
+            $("#modalmantenimiento").modal('hide');
+            $('#producto_data').DataTable().ajax.reload();
+
+            swal.fire(
+                "Registrado",
+                "Se ha realizado con éxito",
+                "success"
+            )
+        }
+    });
+}
+
+function editar(prodid){
+    console.log(prodid);
+}
+
+function eliminar(prodid){
+    swal.fire({
+        title: "CRUD",
+        text: "¿Está seguro de eliminar el registro?",
+        icon: "error",
+        showCancelButton: true,
+        confirmButtonText: "Si",
+        cancelButtonText: "No",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            
+            $.post("../../controller/producto.php?op=eliminar", {prodid:prodid}, function(data){ 
+
+            });
+
+            $('#producto_data').DataTable().ajax.reload();
+            
+            swal.fire(
+                "Eliminado",
+                "El registro se elimino correctamente",
+                "success"
+            )
+        }
+    })
+}
+
+$(document).on("click", "#btnnuevo", function(){
+    $('#mdltitulo').html('Nuevo Registro');
+    $('#modalmantenimiento').modal('show');
 });
 
 init();
