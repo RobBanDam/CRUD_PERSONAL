@@ -11,6 +11,7 @@
             foreach($datos as $row){
                 $sub_array = array();
                 $sub_array[] = $row["prodnom"];
+                $sub_array[] = $row["proddesc"];
                 $sub_array[] = '<button type="button" onClick="editar('.$row["prodid"].');" id="'.$row["prodid"].'" class="btn btn-outline-primary btn-icon"> <div> <i class="fa fa-edit"> </i> </div> </button>';
                 $sub_array[] = '<button type="button" onClick="eliminar('.$row["prodid"].');" id="'.$row["prodid"].'" class="btn btn-outline-danger btn-icon"> <div> <i class="fa fa-trash"> </i> </div> </button>';
 
@@ -31,10 +32,10 @@
             $datos = $producto->get_producto_id($_POST["prodid"]);
             if(empty($_POST["prodid"])){
                 if(is_array($datos) === true and count($datos) === 0){
-                    $producto -> insert_producto($_POST["prodnom"]);
+                    $producto -> insert_producto($_POST["prodnom"], $_POST["proddesc"]);
                 }
             }else{
-                $producto -> update_producto($_POST["prodid"], $_POST["prodnom"]);
+                $producto -> update_producto($_POST["prodid"], $_POST["prodnom"], $_POST["proddesc"]);
             }
 
             break;
@@ -45,7 +46,9 @@
                 foreach($datos as $row){
                     $output["prodid"] = $row["prodid"];
                     $output["prodnom"] = $row["prodnom"];
+                    $output["proddesc"] = $row["proddesc"];
                 }
+                echo json_encode($output);
             }
             break;
 

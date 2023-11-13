@@ -9,7 +9,7 @@
 
     <?php require_once("../../mainleftpanel.php"); ?>
     <?php require_once("../../mainheadpanel.php"); ?>    
-    <?php require_once("../../mainrightpanel.php"); ?>    
+    <?php require_once("../../mainrightpanel.php"); ?>
 
     <!-- ########## START: MAIN PANEL ########## -->
     <div class="br-mainpanel">
@@ -34,6 +34,7 @@
 						<thead>
 							<tr>
 								<th class="wd-15p">Nombre</th>
+								<th class="wd-15p">Descripción</th>
 								<th class="wd-15p"></th>
 								<th class="wd-20p"></th>
 							</tr>

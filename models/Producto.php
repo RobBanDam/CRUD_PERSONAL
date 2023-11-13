@@ -34,28 +34,31 @@
             return $resultado = $sql->fetchAll();
         }
 
-        public function insert_producto($prodnom){
+        public function insert_producto($prodnom, $proddesc){
             $conectar = parent::conexion();
             parent::set_names();
-            $sql = "INSERT INTO tm_producto (prodid, prodnom, fecha, fechamod, fechaelim, estado) VALUES (NULL, ?, now(), NULL, NULL, 1);";
+            $sql = "INSERT INTO tm_producto (prodid, prodnom, proddesc, fecha, fechamod, fechaelim, estado) VALUES (NULL, ?, ?, now(), NULL, NULL, 1);";
             $sql = $conectar->prepare($sql);
             $sql->bindValue(1,$prodnom);
+            $sql->bindValue(2,$proddesc);
             $sql -> execute();
             return $resultado = $sql->fetchAll();
         }
 
-        public function update_producto($prodid, $prodnom){
+        public function update_producto($prodid, $prodnom, $proddesc){
             $conectar = parent::conexion();
             parent::set_names();
             $sql = "UPDATE tm_producto
                 SET
                     $prodnom=?,
+                    $proddesc=?,
                     fechamod=now()
                 WHERE
                     prodid = ?";
             $sql = $conectar->prepare($sql);
             $sql->bindValue(1,$prodnom);
-            $sql->bindValue(2,$prodid);
+            $sql->bindValue(2,$proddesc);
+            $sql->bindValue(3,$prodid);
             $sql -> execute();
             return $resultado = $sql->fetchAll();
         }
