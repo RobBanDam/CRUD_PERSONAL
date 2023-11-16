@@ -1,4 +1,4 @@
-let data; 
+let tabla; 
 
 function init(){
     $("#producto_form").on("submit", function(e){
@@ -7,6 +7,15 @@ function init(){
 }
 
 $(document).ready(function(){
+    $('#catid').select2({
+        dropdownParent: $("#modalmantenimiento")
+    });
+
+    // Realiza la llamada AJAX para obtener las categorías
+    $.post("../../controller/categoria.php?op=combo", function(data){
+        $("#catid").html(data);
+        });
+
     tabla=$('#producto_data').dataTable({
         "aProcessing": true,
         "aServerSide": true,
@@ -89,8 +98,10 @@ function editar(prodid){
     $.post("../../controller/producto.php?op=mostrar", {prodid:prodid}, function(data){
         data = JSON.parse(data);
         $('#prodid').val(data.prodid);
+        $('#catid').val(data.catid).trigger('change');
         $('#prodnom').val(data.prodnom);
         $('#proddesc').val(data.proddesc);
+        $('#prodcant').val(data.prodcant);
     });
 
     $('#modalmantenimiento').modal('show');
@@ -124,9 +135,12 @@ function eliminar(prodid){
 }
 
 $(document).on("click", "#btnnuevo", function(){
-    $('#mdltitulo').html('Nuevo Registro');
-    $('#producto_form')[0].reset();
     $('#prodid').val('');
+    $('#catid').val('').trigger('change');
+    $('#prodnom').val('');
+    $('#proddesc').val('');
+    $('#prodcant').val('');
+    $('#mdltitulo').html('Nuevo Registro');
     $('#modalmantenimiento').modal('show');
 });
 
